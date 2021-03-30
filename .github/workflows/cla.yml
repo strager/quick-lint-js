@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: CLA Assistant
-        if: github.event_name == 'pull_request_target' || github.event.comment.body == "I have read and hereby agree to quick-lint-js' Contributor License Agreement (CLA-v1.md)."
+        if: |
+          github.event_name == 'pull_request_target' || github.event.comment.body == "I have read and hereby agree to quick-lint-js' Contributor License Agreement (CLA-v1.md)."
         uses: cla-assistant/github-action@v2.1.2-beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
