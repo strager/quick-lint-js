@@ -3,6 +3,8 @@
 
 name: CLA
 on:
+  issue_comment:
+    types: [created]
   pull_request_target:
     types: [opened, synchronize]
 
@@ -11,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: CLA Assistant
+        if: github.event_name == 'pull_request_target' || github.event.comment.body == "I have read and hereby agree to quick-lint-js' Contributor License Agreement (CLA-v1.md)."
         uses: cla-assistant/github-action@v2.1.2-beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PERSONAL_ACCESS_TOKEN : ${{ secrets.CLA_ASSISTANT_PERSONAL_ACCESS_TOKEN }}
         with:
-          #@@@ allowlist: strager
           lock-pullrequest-aftermerge: false
           path-to-document: https://github.com/quick-lint/quick-lint-js/blob/master/docs/CLA-v1.md
 
@@ -27,9 +29,10 @@ jobs:
           remote-repository-name: quick-lint-js-cla
 
           create-file-commit-message: Update CLA signatures
-          signed-commit-message: 'Add CLA signature: $contributorName signed in #$pullRequestNo'
           custom-allsigned-prcomment: "All contributors have signed quick-lint-js' Contributor License Agreement (CLA-v1.md)."
+          custom-notsigned-prcomment: "Thank you for your contribution! Like many free software projects, you must sign our [Contributor License Agreement](https://github.com/quick-lint/quick-lint-js/blob/master/docs/CLA-v1.md) before we can accept your contribution. You can agree to the Contributor License Agreement by copy-pasting the following message into a new comment on this GitHub pull request:"
           custom-pr-sign-comment: "I have read and hereby agree to quick-lint-js' Contributor License Agreement (CLA-v1.md)."
+          signed-commit-message: 'Add CLAv1 signature: $contributorName signed in PR #$pullRequestNo'
 
 # quick-lint-js finds bugs in JavaScript programs.
 # Copyright (C) 2020  Matthew Glazar
